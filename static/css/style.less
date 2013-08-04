@@ -1,0 +1,44 @@
+/* Colors for my Website */
+@background-color: #1C5181;
+@foreground-color: #0792C1;
+@text-color: #000000;
+
+html{
+	height:100%;
+}
+
+body {
+	/* Required */
+	position:relative; /* IE8 */
+	text-align:center; /* IE Center Block*/
+	height:100%;
+	
+	/* Additional */
+	background-color: @background-color;
+    color: @text-color;	
+	padding:1em 0 0 0;
+}
+
+section{
+	/* Required */
+	position:relative;
+	text-align:left;
+	margin: 0px auto;
+	overflow:hidden;	/* This chops off any overhanging divs */
+	
+	/* Additional */
+	min-width:500px;
+	max-width:1200px;
+	width:90%;	/* Leaves some breathing space */
+	
+	background: @foreground-color;
+	padding-left:1em;
+		
+}
+
+a {
+    color:@text-color;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: @text-color;
+}
