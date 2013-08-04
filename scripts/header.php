@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title><?php echo $pagetitle; ?> | Project Title</title>
+        <title><?php echo $pagetitle; ?> | YRS-2013</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -15,7 +15,7 @@
 		<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
         <script src="/static/js/vendor/modernizr-2.6.2.min.js"></script>
 		
-		<script>
+		<script> 
 		    document.createElement("article");  
 			document.createElement("footer");  
 			document.createElement("header");  
