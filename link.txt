@@ -1,0 +1,1 @@
+https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=orange&srnamespace=6&prop=imageinfo&format=json
