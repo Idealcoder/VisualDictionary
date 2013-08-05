@@ -219,6 +219,8 @@ AddDefaultCharset utf-8
   # RewriteBase /
 </IfModule>
 
+RewriteRule ^/?([a-zA-Z]{2})/(.*)$ /$2?lan=$1 
+
 # ------------------------------------------------------------------------------
 # | Suppressing / Forcing the "www." at the beginning of URLs                  |
 # ------------------------------------------------------------------------------
