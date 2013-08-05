@@ -307,11 +307,11 @@ RewriteRule ^/?([a-zA-Z]{2})/(.*)$ /$2?lan=$1
 # Block access to hidden files and directories.
 # This includes directories used by version control systems such as Git and SVN.
 
-<IfModule mod_rewrite.c>
-    RewriteCond %{SCRIPT_FILENAME} -d [OR]
-    RewriteCond %{SCRIPT_FILENAME} -f
-    RewriteRule "(^|/)\." - [F]
-</IfModule>
+#<IfModule mod_rewrite.c>
+   #RewriteCond %{SCRIPT_FILENAME} -d [OR]
+    #RewriteCond %{SCRIPT_FILENAME} -f
+    #RewriteRule "(^|/)\." - [F]
+#</IfModule>
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
