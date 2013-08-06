@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="/static/css/normalize.css">
         <link rel="stylesheet" href="/static/css/main.css">
 		<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
         <script src="/static/js/vendor/modernizr-2.6.2.min.js"></script>
 		
 		<script> 

@@ -1,9 +1,29 @@
 ﻿<?php 
+session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 $pagetitle="Home";
+include("$root/scripts/db-connection.php"); 
 include("$root/scripts/header.php"); 
+include("$root/scripts/settings.php");
 ?>
+		<div id ="settings">
+			<?php
+			
+/*$stmt=$dbh->prepare("SELECT * FROM `languages`");
+			
+			while (){
+			
+echo '			<a href="/'.$row["accro"].'/"><img src="/static/img/flags/'.$row["url"].'" /></a>';
+			}*/
+			
+			?>
+		
+		</div>
+		
 		<section>
+			<i class="icon-cogs"></i> icon-cogs
+		
+			<?php echo $messages[$language["id"]]; ?><br>
 			Test Flags<br>
 			Selected vs not Selected
 			<img src="/static/img/flags/United-kingdom-flag-48.png"><img style="opacity:0.5" src="/static/img/flags/United-kingdom-flag-48.png">
