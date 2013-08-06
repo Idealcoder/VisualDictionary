@@ -1,52 +1,46 @@
-﻿<?php 
+<?php 
 session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-$pagetitle="Home";
+$pagetitle="Add Tag";
 include("$root/scripts/db-connection.php"); 
 include("$root/scripts/header.php"); 
 include("$root/scripts/settings.php");
 ?>
 		<div id ="settings">
 			<?php
-			
-/*$stmt=$dbh->prepare("SELECT * FROM `languages`");
-			
-			while (){
-			
-echo '			<a href="/'.$row["accro"].'/"><img src="/static/img/flags/'.$row["url"].'" /></a>';
-			}*/
+			$stmt=$dbh->prepare("SELECT * FROM `languages`");
+			$stmt->execute();
+
+			while ($row = $stmt->fetch()) {			
+echo '			<a href="/'.$row["accro"].'/index2.php"><img src="/static/img/flags/'.$row["flagurl"].'" /></a>';
+			}
 			
 			?>
 		
 		</div>
-		<i class="icon-cogs"></i> icon-cogs
+		<nav>
+			<i class="icon-cogs icon-2x"></i>
+		</nav>
+		<br>
 		
-		<section>
+		
+		<section style="width:500px;">
 			
+			<?php echo $messages[2]; ?><br>
 			
+			<img width="80%" src="/static/img/tags/Red_Apple.jpg" />
+			<br><br>
 			<form method="POST" action="addtag.php">
 				<input type="hidden" name="imageid" value="3">
 				<input type="radio" name="toogeneric" value="0" checked="checked"><textarea type="text" name="name"></textarea><br>
-				<input type="radio" name="toogeneric" value="1">Too Generic
-				<button type="submit">Ok</button>
+				<input type="radio" name="toogeneric" value="1">Too Generic<br>
+				
+				
+				<div style="text-align:right;margin:0.3em;"><button href="/en/index.php">Differen't Image</button><button type="submit">Ok</button></div>
 			</form>
-		
-			<?php echo $messages[1]; ?><br>
-			Test Flags<br>
-			Selected vs not Selected
-			<img src="/static/img/flags/United-kingdom-flag-48.png"><img style="opacity:0.5" src="/static/img/flags/United-kingdom-flag-48.png">
-			
-			
-			<p>Welcome to IdealFrame Work, a fork of <a href="http://html5boilerplate.com/">HTML5 Boiler Plate</a>. It also has a client-based version of <a href="http://lesscss.org/">LESS</a>, a dynamic css language. Just a couple of basics to start you off.</p>
-			
-			<ul>
-			<li>Change the project title in /scripts/header.php line 9</li>
-			<li>At the top of each page in php set the var <b>$pagetitle</b>, for the title of that page</li>
-			<li>Restyle the css, the stuff here is just a guideline</li>
-			<li>The error folder contains errors, you will want to edit</li>
-			</ul>
 			
 		</section>
+		<br><br>
 		
 <?php 
 include("$root/scripts/footer.php"); 

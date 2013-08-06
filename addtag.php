@@ -16,6 +16,6 @@ $stmt->execute();
     echo($errors[2]);
 
 //localhost/UK/addtag.php?imageid=3&toogeneric=0&name=Many Apples!
-//header("Location: /".$language["acrro"]."/");
+header("Location: index2.php");
 //exit;
 ?>
