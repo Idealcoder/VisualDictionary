@@ -23,7 +23,7 @@ echo '			<a href="/'.$row["accro"].'/"><img src="/static/img/flags/'.$row["url"]
 		<section>
 			<i class="icon-cogs"></i> icon-cogs
 		
-			<?php echo $messages[$language["id"]]; ?><br>
+			<?php echo $messages[1]; ?><br>
 			Test Flags<br>
 			Selected vs not Selected
 			<img src="/static/img/flags/United-kingdom-flag-48.png"><img style="opacity:0.5" src="/static/img/flags/United-kingdom-flag-48.png">

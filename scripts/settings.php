@@ -3,16 +3,12 @@ $stmt = $dbh->prepare("SELECT * FROM `languages` WHERE `accro`= ?");
 $stmt->bindParam(1, $_GET["lan"]);
 $stmt->execute();
 
-
 if ($stmt->rowCount()==0) {
 	header("Location: /UK/");
 	exit();
 }
  
 $language = $stmt->fetch();
-
- print_r($language);
-
   
 //$language["id"]
 //$language["accro"]
@@ -25,9 +21,7 @@ $stmt->execute();
 
 $messages = array();
 while ($row = $stmt->fetch()) {
-    $messages[$row["id"]]=$row["texts"];
+    $messages[$row["instructionid"]]=$row["text"];
   }
-  
-  print_r($messages);
 
 ?>
