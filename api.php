@@ -23,17 +23,47 @@ UNION ALL
 		$stmt->bindParam(1, $_GET["imageid"]);
 		$stmt->bindParam(2, $language["id"]);
 		$stmt->bindParam(3, $_GET["toogeneric"]);
-		$stmt->bindParam(4, $_GET["name"]);
+		$stmt->bindValue(4, strtolower($_GET["name"]));
 		$stmt->execute();
 		
 		header("Location: index2.php"); //currently not working off ajax.
         break;
 //**API Start**
     case "searchimages":
-		//this is to search for images with the same meaning as the query
-		$stmt=$dbh->prepare("SELECT `images`.`url` FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE `imagetag`.`name` LIKE ? GROUP BY `images`.`id`");
-		$stmt->bindValue(1,"%".$_GET["query"]."%");
+		//this is to search for images with the same meaning as the query	
+		if (isset($_GET["query"])==0) {
+			echo json_encode(array("error" => "no query string"));
+		break;
+		}
+		
+		$stmt = $dbh->prepare("SELECT * FROM `languages` WHERE `accro`= ?");
+		$stmt->bindValue(1, strtolower($_GET["from"]));
 		$stmt->execute();
+		$languagefrom = $stmt->fetch();
+		
+		if ($stmt->rowCount()==0) {
+			echo json_encode(array("error" => "no from language specified"));
+			break;
+		}
+		
+		$stmt = $dbh->prepare("SELECT * FROM `languages` WHERE `accro`= ?");
+		$stmt->bindValue(1, strtolower($_GET["to"]));
+		$stmt->execute();
+		$languageto = $stmt->fetch();
+		
+		if ($stmt->rowCount()==0) {
+			echo json_encode(array("error" => "no to language specified"));
+			break;
+		}
+		
+		$stmt=$dbh->prepare("SELECT `images`.`url` FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE (`imagetag`.`name` LIKE ? ) AND (`imagetag`.`languageid` = ?) GROUP BY `images`.`id` LIMIT 0,20");
+		
+		$stmt->bindValue(1,"%".strtolower($_GET["query"])."%");
+		$stmt->bindParam(2,$languagefrom["id"]);
+		$stmt->execute();
+		
+		$errors = $stmt->errorInfo();
+    echo($errors[2]);
 		
 		$imageresults = array();
 		while ($row = $stmt->fetch()) {
