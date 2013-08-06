@@ -1,6 +1,6 @@
 <?php 
 $stmt = $dbh->prepare("SELECT * FROM `languages` WHERE `accro`= ?");
-$stmt->bindParam(1, $_GET["lan"]);
+$stmt->bindValue(1, strtoupper($_GET["lan"]));
 $stmt->execute();
 
 if ($stmt->rowCount()==0) {
