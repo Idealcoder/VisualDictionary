@@ -19,9 +19,17 @@ echo '			<a href="/'.$row["accro"].'/"><img src="/static/img/flags/'.$row["url"]
 			?>
 		
 		</div>
+		<i class="icon-cogs"></i> icon-cogs
 		
 		<section>
-			<i class="icon-cogs"></i> icon-cogs
+			
+			
+			<form method="POST" action="addtag.php">
+				<input type="hidden" name="imageid" value="3">
+				<input type="radio" name="toogeneric" value="0" checked="checked"><textarea type="text" name="name"></textarea><br>
+				<input type="radio" name="toogeneric" value="1">Too Generic
+				<button type="submit">Ok</button>
+			</form>
 		
 			<?php echo $messages[1]; ?><br>
 			Test Flags<br>

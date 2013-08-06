@@ -14,5 +14,4 @@ $stmt->execute();
 $image = $stmt->fetch();
 
 echo json_encode($image);
-
 ?>
