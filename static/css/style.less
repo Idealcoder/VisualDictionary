@@ -6,8 +6,10 @@
 @nav-color: orange;
 @text-color: #000000;
 
+
 html{
 	height:100%;
+	overflow-y: scroll;
 }
 
 body {
@@ -19,6 +21,10 @@ body {
 	/* Additional */
 	background-color: @background-color;
     color: @text-color;	
+	
+	padding:0;
+	margin:0;
+	background-image:url('/static/img/noise.png');
 }
 
 section{
@@ -34,8 +40,10 @@ section{
 	width:90%;	/* Leaves some breathing space */
 	
 	background: @foreground-color;
-	padding-left:1em;
-	.rounded(5px);	
+	padding:0.5em;
+	.rounded(4px);	
+	margin-bottom:1em;
+	.drop-shadow(4px,4px,7px,0.5);
 }
 
 a {
@@ -46,18 +54,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #settings {
-	float:left;
+	padding:0;
 	width:100%;
 	background-color:#e0e0e0;
 	.inner-shadow(0px, -4px, 4px, 0.5); 
+	background-image:url('/static/img/noise.png');
 }
 
 nav {
-	padding:0.3em;
-	padding-right:0.3em;
-	padding-top:1.8em;
+	padding:0.2em;
 	text-align:right;
 	background-color:@nav-color;
+	margin-bottom:1em;
+	.drop-shadow(2px,2px,3px,0.5);
+	.gradient(@nav-color,darken(@nav-color,5%),@nav-color);
 }
 
 #settingsbutton {
@@ -74,3 +84,45 @@ nav {
 img {
 	.rounded(10px);
 }
+
+.flag {
+	opacity:0.5;
+}
+
+.flag:hover{
+	opacity:1;	
+}
+
+.flag-active {
+	opacity:0.8;
+}
+
+.tag-image{
+	width:70%;
+}
+.tag-image-wrapper{
+	.inner-shadow(2px,2px,5px,0.5);
+	background-color:#fff;
+	padding:1em;
+	margin-bottom:1em;
+}
+.button {
+	text-decoration:none;
+	background-color:#fff;
+	 border: 1px solid darken(@foreground-color,20%);
+	 .rounded(5px);
+	 padding:0.2em;
+	 padding-left:0.4em;
+	 padding-right:0.4em;
+}
+.button:hover{
+	background-color:#ddd;
+}
+
+textarea {
+	width:96%;
+	.inner-shadow(2px,2px,5px,0.5);	
+	border: 0px solid #999;
+	font-family: Tahoma, sans-serif;
+}
+
