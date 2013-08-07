@@ -12,9 +12,10 @@
 
         <link rel="stylesheet" href="/static/css/normalize.css">
         <link rel="stylesheet" href="/static/css/main.css">
-		<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
 		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
-        <script src="/static/js/vendor/modernizr-2.6.2.min.js"></script>
+		<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
+        
+		<script src="/static/js/vendor/modernizr-2.6.2.min.js"></script>
 		
 		<script> 
 		    document.createElement("article");  
@@ -30,3 +31,23 @@
         <![endif]-->
 
         <!-- Main Content -->
+		<div id ="settings">
+			Choose Website Language:
+<?php
+			$stmt=$dbh->prepare("SELECT * FROM `languages`");
+			$stmt->execute();
+
+			while ($row = $stmt->fetch()) {			
+				if ($row["id"]==$language["id"]) {
+					echo '			<a href="/'.$row["accro"].'/index2.php"><img class="flag flag-active" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";
+				} else {
+					echo '			<a href="/'.$row["accro"].'/index2.php"><img class="flag" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";				
+				}
+			}
+			
+			?>
+		
+		</div>
+		<nav>
+			<a href="#"><i id="settingsbutton" class="icon-cogs icon-2x"></i></a>
+		</nav>
