@@ -5,5 +5,18 @@
         <script src="/static/js/plugins.js"></script>
         <script src="/static/js/main.js"></script>
 		
+		<script type="text/javascript">
+			$(document).ready(function(){
+
+				$("#settings").hide();
+				$("#settingsbutton").show();
+
+				$('#settingsbutton').click(function(){
+				$("#settings").slideToggle();
+				});
+
+			});
+		</script>
+		
     </body>
 </html>
