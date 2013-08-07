@@ -2,7 +2,16 @@
 session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 include("$root/scripts/db-connection.php"); 
-include("$root/scripts/settings.php");
+//include("$root/scripts/settings.php");
+
+//disable as will potentialy mess up jsons. Good enough checks are in place
+error_reporting(0);
+
+
+if (isset($_GET["type"])==0) {
+			echo json_encode(array("error" => "no type parameter specified"));
+			break;
+}
 
 switch (strtolower($_GET["type"])) {
 // **Misc Requests**
@@ -19,6 +28,23 @@ UNION ALL
         break;
     case "addtag":
 		//this is to add a tag, run on submit.
+		if (isset($_GET["name"])==0) {
+			echo json_encode(array("error" => "no imageid parameter"));
+			break;
+		if (isset($_GET["name"])==0) {
+			echo json_encode(array("error" => "no toogeneric parameter"));
+			break;
+		}
+		}
+		if (isset($_GET["name"])==0) {
+			echo json_encode(array("error" => "no name string"));
+			break;
+		}
+		if ((trim($_GET["name"]))=="") {
+			echo json_encode(array("error" => "name string is blank"));
+			break;
+		}
+		
 		$stmt = $dbh->prepare("INSERT INTO `imagetag`(`imageid`, `languageid`, `toogeneric`, `name`) VALUES (?,?,?,?)");
 		$stmt->bindParam(1, $_GET["imageid"]);
 		$stmt->bindParam(2, $language["id"]);
@@ -33,7 +59,7 @@ UNION ALL
 		//this is to search for images with the same meaning as the query	
 		if (isset($_GET["query"])==0) {
 			echo json_encode(array("error" => "no query string"));
-		break;
+			break;
 		}
 		
 		$stmt = $dbh->prepare("SELECT * FROM `languages` WHERE `accro`= ?");
@@ -57,21 +83,67 @@ UNION ALL
 		}
 		
 		$stmt=$dbh->prepare("SELECT `images`.`url` FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE (`imagetag`.`name` LIKE ? ) AND (`imagetag`.`languageid` = ?) GROUP BY `images`.`id` LIMIT 0,20");
-		
 		$stmt->bindValue(1,"%".strtolower($_GET["query"])."%");
 		$stmt->bindParam(2,$languagefrom["id"]);
 		$stmt->execute();
-		
-		$errors = $stmt->errorInfo();
-    echo($errors[2]);
 		
 		$imageresults = array();
 		while ($row = $stmt->fetch()) {
 			$imageresults["images"][]="http://".$_SERVER["SERVER_NAME"]."/static/img/tags/".$row["url"];	
 		}
-	echo json_encode($imageresults);
+		
+		echo json_encode($imageresults);
         break;
-
+	case "translate":
+	//this will give an array of words ranked by relevance when an array of one or more picture urls is parsed
+	if (isset($_GET["array"])==0) {
+			echo json_encode(array("error" => "no array parameter"));
+			break;
+	}
+	if ($_GET["array"]=="") {
+			echo json_encode(array("error" => "no array parameter"));
+			break;
+	}
+	
+	$stmt = $dbh->prepare("SELECT * FROM `languages` WHERE `accro`= ?");
+	$stmt->bindValue(1, strtolower($_GET["to"]));
+	$stmt->execute();
+	$languageto = $stmt->fetch();
+		
+	if ($stmt->rowCount()==0) {
+		echo json_encode(array("error" => "no to language specified"));
+		break;
+	}
+		
+	$images = json_decode($_GET["array"],true);
+	
+	$wherestring="";
+	foreach ($images["images"] as &$value) {
+		if ($wherestring=="") {
+			$wherestring=$wherestring."(`images`.`url`=?) ";
+		} else {
+			$wherestring=$wherestring."OR (`images`.`url`=?) ";
+		}
+	}
+	
+	$stmt = $dbh->prepare("SELECT COUNT(*) as 'count',`imagetag`.`name` FROM `images` JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE ( ".$wherestring." ) AND `languageid`=? GROUP BY `imagetag`.`name` ORDER BY `count` DESC");
+	
+	$i=0;
+	foreach ($images["images"] as &$value) {
+		$i++;
+		$tokens = explode('/', $value);
+		$stmt->bindValue($i,$tokens[sizeof($tokens)-1]);
+	}
+	$i++;
+	$stmt->bindValue($i,$languageto["id"]);
+	$stmt->execute();
+	
+	$results = array();
+	while ($row = $stmt->fetch()) {
+		$results["results"][]=$row["name"];	
+	}
+	
+	echo json_encode($results);
 }
 
 
