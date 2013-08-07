@@ -4,9 +4,8 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 include("$root/scripts/db-connection.php"); 
 //include("$root/scripts/settings.php");
 
-//disable as will potentialy mess up jsons. Good enough checks are in place
+//disable as will potentially mess up jsons. Good enough checks are in place
 error_reporting(0);
-
 
 if (isset($_GET["type"])==0) {
 			echo json_encode(array("error" => "no type parameter specified"));
@@ -92,6 +91,13 @@ UNION ALL
 			$imageresults["images"][]="http://".$_SERVER["SERVER_NAME"]."/static/img/tags/".$row["url"];	
 		}
 		
+		if ($stmt->rowCount()==0) {
+			echo json_encode(array("error" => "no images found. Query has been added to que to be tagged"));
+			$stmt=$dbh->prepare("INSERT INTO `yrs-2013`.`tagque` (`tag`) VALUES (?)");	
+			$stmt->bindValue(1,strtolower($_GET["query"]));	
+			$stmt->execute();
+		}
+		
 		echo json_encode($imageresults);
         break;
 	case "translate":
@@ -126,7 +132,7 @@ UNION ALL
 		}
 	}
 	
-	$stmt = $dbh->prepare("SELECT COUNT(*) as 'count',`imagetag`.`name` FROM `images` JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE ( ".$wherestring." ) AND `languageid`=? GROUP BY `imagetag`.`name` ORDER BY `count` DESC");
+	$stmt = $dbh->prepare("SELECT COUNT(*) as 'count',`imagetag`.`name` FROM `images` JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE ( ".$wherestring." ) AND `languageid`=? GROUP BY `imagetag`.`name` ORDER BY `count` DESC LIMIT 0,10");
 	
 	$i=0;
 	foreach ($images["images"] as &$value) {
