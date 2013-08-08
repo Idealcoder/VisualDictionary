@@ -4,7 +4,6 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en-GB" xml:lang="en-GB"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Visual Dictionary</title>
         <meta name="description" content="">
@@ -18,7 +17,7 @@
 		<script src="/static/js/vendor/modernizr-2.6.2.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		
-		<script> 
+		<script>  
 		    document.createElement("article");  
 			document.createElement("footer");  
 			document.createElement("header");  
