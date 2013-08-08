@@ -33,7 +33,7 @@
 
         <!-- Main Content -->
 		<div id ="settings">
-			Choose Website Language:
+			<?php echo $messages[5]; ?>:
 <?php
 			$stmt=$dbh->prepare("SELECT * FROM `languages`");
 			$stmt->execute();
