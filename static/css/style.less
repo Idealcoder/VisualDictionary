@@ -2,8 +2,8 @@
 
 /* Colour Scheme */
 @background-color: #fff;
-@foreground-color: orange;
-@nav-color: orange;
+@foreground-color:#ffba00;
+@nav-color: #ffba00;
 @text-color: #000000;
 
 
@@ -86,7 +86,7 @@ img {
 }
 
 .flag {
-	opacity:0.5;
+	opacity:0.3;
 }
 
 .flag:hover{
@@ -94,7 +94,7 @@ img {
 }
 
 .flag-active {
-	opacity:0.8;
+	opacity:1;
 }
 
 .tag-image{
@@ -124,5 +124,53 @@ textarea {
 	.inner-shadow(2px,2px,5px,0.5);	
 	border: 0px solid #999;
 	font-family: Tahoma, sans-serif;
+}
+
+.input_hidden {
+    position: absolute;
+    left: -9999px;
+}
+
+.selected {
+    opacity: 1 !important;
+}
+
+#sites label {
+    display: inline-block;
+    cursor: pointer;
+	opacity:0.3;
+}
+
+
+
+#sites label:hover {
+    opacity: 1;
+}
+
+#sites label img {
+    padding: 3px;
+    
+}
+
+#sites2 label {
+    display: inline-block;
+    cursor: pointer;
+	opacity:0.3;
+}
+
+
+
+#sites2 label:hover {
+    opacity: 1;
+}
+
+#sites2 label img {
+    padding: 3px;
+    
+}
+
+.hover{
+	/*border: 3px solid @nav-color;*/
+	.box-shadow(0px 0px 10px darken(@nav-color,40%))
 }
 
