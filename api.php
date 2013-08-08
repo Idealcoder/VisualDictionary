@@ -2,7 +2,7 @@
 session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 include("$root/scripts/db-connection.php"); 
-//include("$root/scripts/settings.php");
+include("$root/scripts/settings.php");
 
 //disable as will potentially mess up jsons. Good enough checks are in place
 error_reporting(0);
@@ -16,13 +16,13 @@ switch (strtolower($_GET["type"])) {
 // **Misc Requests**
     case "gettag":
 		//this is to find out what image the site should be asking the user to tag
-        $stmt = $dbh->prepare("(SELECT NULL AS 'count',`images`.`url` AS 'url',`images`.`id` AS 'imagesid' FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE `imagetag`.`languageid`!=1 OR `imagetag`.`languageid` IS NULL  GROUP BY `images`.`id`)
-UNION ALL
-(SELECT COUNT(`imagetag`.`toogeneric`) AS 'count',`images`.`url`,`images`.`id` AS 'imagesid' FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE `imagetag`.`languageid`=1 GROUP BY `images`.`id` )  ORDER BY `count` ASC");
+        $stmt = $dbh->prepare("SELECT COUNT(`imagetag`.`imageid`) as 'count',`images`.`url`,`images`.`id` FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` AND (`imagetag`.`languageid`=? OR `imagetag`.`languageid` IS NULL) GROUP BY `images`.`url` ORDER BY `count` ASC");
 		$stmt->bindParam(1, $language["id"]);
 		$stmt->execute();
 		$image = $stmt->fetch();
-
+		
+		$image["url"]="http://".$_SERVER["SERVER_NAME"]."/static/img/tags/".$image["url"];
+		
 		echo json_encode($image);
         break;
     case "addtag":
@@ -50,7 +50,7 @@ UNION ALL
 		$stmt->bindParam(3, $_GET["toogeneric"]);
 		$stmt->bindValue(4, strtolower($_GET["name"]));
 		$stmt->execute();
-		
+				
 		header("Location: index2.php"); //currently not working off ajax.
         break;
 //**API Start**
@@ -67,7 +67,7 @@ UNION ALL
 		$languagefrom = $stmt->fetch();
 		
 		if ($stmt->rowCount()==0) {
-			echo json_encode(array("error" => "no from language specified"));
+			echo json_encode(array("error" => "Please Choose Language"));
 			break;
 		}
 		
@@ -77,12 +77,12 @@ UNION ALL
 		$languageto = $stmt->fetch();
 		
 		if ($stmt->rowCount()==0) {
-			echo json_encode(array("error" => "no to language specified"));
+			echo json_encode(array("error" => "Please Choose Language"));
 			break;
 		}
 		
 		$stmt=$dbh->prepare("SELECT `images`.`url` FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` WHERE (`imagetag`.`name` LIKE ? ) AND (`imagetag`.`languageid` = ?) GROUP BY `images`.`id` LIMIT 0,20");
-		$stmt->bindValue(1,"%".strtolower($_GET["query"])."%");
+		$stmt->bindValue(1,"".trim(strtolower($_GET["query"]))."");
 		$stmt->bindParam(2,$languagefrom["id"]);
 		$stmt->execute();
 		
@@ -92,10 +92,11 @@ UNION ALL
 		}
 		
 		if ($stmt->rowCount()==0) {
-			echo json_encode(array("error" => "no images found. Query has been added to que to be tagged"));
+			echo json_encode(array("error" => "No images found. Query has been added to queue to be tagged"));
 			$stmt=$dbh->prepare("INSERT INTO `yrs-2013`.`tagque` (`tag`) VALUES (?)");	
 			$stmt->bindValue(1,strtolower($_GET["query"]));	
 			$stmt->execute();
+			break;
 		}
 		
 		echo json_encode($imageresults);
