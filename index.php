@@ -8,8 +8,8 @@ include("$root/scripts/header.php");
 ?>
 		<h1>Visual Dictionary</h1>
 
-		<section style="max-width:900px;padding-top:1em;">
-			<div style="text-align:center;width:40%;float:left;">
+		<section style="padding-top:1em;">
+			<div class="translatebar">
 			<div id="sites">
 			From<br>
 			<?php
@@ -17,7 +17,7 @@ include("$root/scripts/header.php");
 			$stmt->execute();
 		
 			while ($row = $stmt->fetch()) {			
-if (1=1) {
+if (1==1) {
 			echo '			<input type="radio" class="leftradio" name="site" id="'.$row["accro"].'" value="'.$row["accro"].'"/><label title="'.$row["fulltext"].'" id="'.$row["accro"].'21" for="'.$row["accro"].'"><img src="/static/img/flags/'.$row["flagurl"].'"  /></label>';
 } else {
 			echo '			<input type="radio" class="leftradio" name="site" id="'.$row["accro"].'" value="'.$row["accro"].'"  checked="checked" /><label title="'.$row["fulltext"].'" id="'.$row["accro"].'21" class="selected" for="'.$row["accro"].'"><img src="/static/img/flags/'.$row["flagurl"].'"  /></label>';
@@ -28,12 +28,11 @@ if (1=1) {
 			</div>
 			</div>
 			
-			<div style="text-align:center;width:20%;float:left;">
-			<br>
-			<a class="button" title="Swap Languages" id="invertbutton" style="padding:0.8em;padding-bottom:0.3em;cursor:default"><i class="icon-exchange icon-2x"></i></a>
+			<div id="switch">
+			<a class="button" title="Swap Languages" id="invertbutton" ><i class="icon-exchange icon-2x"></i></a>
 			</div>
 			
-			<div style="text-align:center;width:40%;float:left;">
+			<div class="translatebar">
 			<div id="sites2">
 			To<br>
 						<?php
@@ -41,7 +40,7 @@ if (1=1) {
 			$stmt->execute();
 		
 			while ($row = $stmt->fetch()) {		
-if (1=1) {			
+if (1==1) {			
 echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"].'2" value="'.$row["accro"].'"/><label title="'.$row["fulltext"].'" id="'.$row["accro"].'22" for="'.$row["accro"].'2"><img src="/static/img/flags/'.$row["flagurl"].'"   /></label>';
 } else {
 echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"].'2" value="'.$row["accro"].'" checked="checked"/><label title="'.$row["fulltext"].'" id="'.$row["accro"].'22" class="selected" for="'.$row["accro"].'2"><img src="/static/img/flags/'.$row["flagurl"].'"  /></label>';
@@ -49,8 +48,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			}
 			
 			?>			</div></div>
-			
-			<br><br><br><br><br>
+			<br>
 			<center>
 			<input style="" id="searchbox" type="text" placeholder="Type Search Here" /><br><br>
 			</center>

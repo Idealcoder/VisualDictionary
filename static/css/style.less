@@ -36,12 +36,12 @@ section{
 	overflow:hidden;	/* This chops off any overhanging divs */
 	
 	/* Additional */
-	min-width:500px;
 	max-width:900px;
 	width:90%;	/* Leaves some breathing space */
 	
 	background: @foreground-color;
 	padding:0.5em;
+	padding-bottom:0em;
 	.rounded(4px);	
 	margin-bottom:1em;
 	.drop-shadow(4px,4px,7px,0.5);
@@ -135,8 +135,8 @@ textarea {
 }
 
 .input_hidden {
-    /*position: absolute;
-    left: -9999px;*/
+    position: absolute;
+    left: -9999px;
 }
 
 .selected {
@@ -183,9 +183,13 @@ textarea {
 	transition: box-shadow 0.5s;
 }
 
+
+
+
 #resultslist {
 	background-color:#fff;
 	padding:10px;
+	padding-bottom:none;
 }
 
 #searchbox{
@@ -201,3 +205,68 @@ textarea {
 	transition: box-shadow 0.5s;
 }
 
+#invertbutton{
+	padding:0.8em;
+	padding-bottom:0.3em;
+	cursor:default;
+}
+
+@media all and (min-width: 640px) {
+
+
+
+.translatebar{
+	text-align:center;
+	width:40%;
+	float:left;
+}
+
+#switch {
+	margin-top:1.5em;
+	text-align:center;
+	width:20%;
+	float:left;
+}
+
+#searchbox {
+	margin-top:1.5em;
+}
+
+}
+
+@media all and (max-width: 640px) {
+
+#switch #invertbutton i:before{
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+#invertbutton{
+	padding:0.4em;
+	padding-top:1em;
+	padding-bottom:0.5em;
+	margin-bottom:1em;
+	margin-top:0.5em;
+	
+}
+
+.translatebar{
+	
+	float:none;
+	text-align:center;
+}
+
+#sites2 {
+	margin-top:1em;
+}
+
+#switch {
+	float:none;
+	text-align:center;
+}
+
+}
