@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 $stmt = $dbh->prepare("SELECT * FROM `languages` WHERE `accro`= ?");
 $stmt->bindValue(1, strtolower($_GET["lan"]));
 $stmt->execute();
