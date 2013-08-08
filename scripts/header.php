@@ -16,6 +16,7 @@
 		<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
         
 		<script src="/static/js/vendor/modernizr-2.6.2.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		
 		<script> 
 		    document.createElement("article");  
@@ -39,9 +40,9 @@
 
 			while ($row = $stmt->fetch()) {			
 				if ($row["id"]==$language["id"]) {
-					echo '			<a href="/'.$row["accro"].'/index2.php"><img class="flag flag-active" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";
+					echo '			<a title="'.$row["fulltext"].'" href="/'.$row["accro"].'/index2.php"><img class="flag flag-active" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";
 				} else {
-					echo '			<a href="/'.$row["accro"].'/index2.php"><img class="flag" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";				
+					echo '			<a title="'.$row["fulltext"].'" href="/'.$row["accro"].'/index2.php"><img class="flag" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";				
 				}
 			}
 			
