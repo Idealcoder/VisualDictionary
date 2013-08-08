@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
 import MySQLdb as mdb
 import sys
 import requests
@@ -51,7 +54,7 @@ def insert_tags(tag_raw, tag_name, last_img_id):
 		conn = mdb.connect('127.0.0.1', 'YRS-2013','hipercritical', 'yrs-2013', port=3306, charset='utf8')
 		cur = conn.cursor()
 		cur.execute("INSERT INTO imagetag (imageid, languageid, name, machine) VALUES (%s, %s, %s,%s)", (last_img_id, "1", tag_raw,"1"))
-		print tag_raw
+		#print tag_raw
 		conn.commit()
 	except mdb.Error, e:
 		print "Error inserting tags... %d: %s" % (e.args[0], e.args[1])
@@ -76,15 +79,15 @@ url_tag=tag
 tag_name=tag
 
 	
-url = "http://ycpi.api.flickr.com/services/rest/?method=flickr.photos.search&safety_level=safe&per_page=10&api_key=37cf642c93fc4bc58d8be3292db48442&format=json&tags=" + url_tag
+url = "http://ycpi.api.flickr.com/services/rest/?method=flickr.photos.search&sort=relevance&safety_level=safe&per_page=10&api_key=37cf642c93fc4bc58d8be3292db48442&format=json&text=" + url_tag
 
 r = requests.get(url)
 txt = r.text
 txt = txt[14:-1]
 json_data = json.loads(txt)
-print json_data
+#print json_data
 json_data = json_data["photos"]["photo"]
-print json_data
+#print json_data
 #Follow URL :-)
 #Iterate thru all json_data to find id
 json_length = len(json_data)
@@ -105,8 +108,8 @@ while i < json_length:
 	time.sleep(1)
 	tag_txt = g.text
 	tag_txt = tag_txt[14:-1]
-	print tag_txt
-	print "\n"
+	#print tag_txt
+	#print "\n"
 	json_tag_txt = json.loads(tag_txt)
 	a = 0
 	a = int(a)
@@ -119,12 +122,13 @@ while i < json_length:
 	img = urllib2.urlopen(img_url).read()
 	checksum = hashlib.md5(img)
 	checksum = checksum.hexdigest()
-	print checksum
+	#print checksum
 	with open(img_name, 'wb') as f:
 		f.write(img)
 		f.close()
 	i += 1
 	last_img_id = mysql_connection(img_name, tag_raw, tag_ids, checksum)
+	insert_tags(tag_name, "", last_img_id)
 	for tag_loop in json_tag_txt:
 		tag_id = tag_loop["id"]
 		tag_txt = tag_loop["raw"]
