@@ -5,6 +5,10 @@ include("$root/scripts/db-connection.php");
 include("$root/scripts/settings.php");
 include("$root/scripts/header.php"); 
 
+if ($_SESSION["tag_added"]==0) {
+	header("Location: tagoverlay.php");
+	exit();
+}
 ?>
 		<h1>Visual Dictionary</h1>
 
@@ -61,7 +65,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 		
 		</section>
 		<div style="margin:auto;max-width:900px;text-align:right">
-		<a href="#">Tag more images</a> to improve translation accuracy
+		<a href="tag.php">Tag more images</a> to improve translation accuracy
 		</div>
 		
 		<script>

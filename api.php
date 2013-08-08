@@ -57,8 +57,12 @@ switch (strtolower($_GET["type"])) {
 			$stmt->bindParam(1, $_GET["imageid"]);
 			$stmt->execute();			
 		}
-				
-		header("Location: index2.php"); //currently not working off ajax.
+		if ($_SESSION["tag_added"]==0) {
+		$_SESSION["tag_added"]=1;
+		header("Location: index.php"); //educated guess user want translation page
+		} else {
+		header("Location: tag.php"); //currently not working off ajax.		
+		}
         break;
 //**API Start**
     case "searchimages":
