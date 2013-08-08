@@ -18,7 +18,11 @@ include("$root/scripts/header.php");
 			$stmt->execute();
 		
 			while ($row = $stmt->fetch()) {			
-echo '			<input type="radio" class="leftradio" name="site" id="'.$row["accro"].'" value="'.$row["accro"].'"/><label title="'.$row["fulltext"].'" id="'.$row["accro"].'21" for="'.$row["accro"].'"><img src="/static/img/flags/'.$row["flagurl"].'"  /></label>';
+if (1=1) {
+			echo '			<input type="radio" class="leftradio" name="site" id="'.$row["accro"].'" value="'.$row["accro"].'"/><label title="'.$row["fulltext"].'" id="'.$row["accro"].'21" for="'.$row["accro"].'"><img src="/static/img/flags/'.$row["flagurl"].'"  /></label>';
+} else {
+			echo '			<input type="radio" class="leftradio" name="site" id="'.$row["accro"].'" value="'.$row["accro"].'"  checked="checked" /><label title="'.$row["fulltext"].'" id="'.$row["accro"].'21" class="selected" for="'.$row["accro"].'"><img src="/static/img/flags/'.$row["flagurl"].'"  /></label>';
+}
 			}
 			
 			?>
@@ -27,7 +31,7 @@ echo '			<input type="radio" class="leftradio" name="site" id="'.$row["accro"].'
 			
 			<div style="text-align:center;width:20%;float:left;">
 			<br>
-			<a class="button" id="invertbutton" style="padding:0.8em;padding-bottom:0.3em"><i class="icon-exchange icon-2x"></i></a>
+			<a class="button" title="Swap Languages" id="invertbutton" style="padding:0.8em;padding-bottom:0.3em;cursor:default"><i class="icon-exchange icon-2x"></i></a>
 			</div>
 			
 			<div style="text-align:center;width:40%;float:left;">
@@ -37,20 +41,26 @@ echo '			<input type="radio" class="leftradio" name="site" id="'.$row["accro"].'
 			$stmt=$dbh->prepare("SELECT * FROM `languages`");
 			$stmt->execute();
 		
-			while ($row = $stmt->fetch()) {			
+			while ($row = $stmt->fetch()) {		
+if (1=1) {			
 echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"].'2" value="'.$row["accro"].'"/><label title="'.$row["fulltext"].'" id="'.$row["accro"].'22" for="'.$row["accro"].'2"><img src="/static/img/flags/'.$row["flagurl"].'"   /></label>';
+} else {
+echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"].'2" value="'.$row["accro"].'" checked="checked"/><label title="'.$row["fulltext"].'" id="'.$row["accro"].'22" class="selected" for="'.$row["accro"].'2"><img src="/static/img/flags/'.$row["flagurl"].'"  /></label>';
+}
 			}
 			
 			?>			</div></div>
 			
-			<br><br><br><br>
-			<input style="padding:" id="searchbox" type="text" placeholder="Type Translation Here" /><br><br>
+			<br><br><br><br><br>
+			<center>
+			<input style="" id="searchbox" type="text" placeholder="Type Search Here" /><br><br>
+			</center>
 			
 			<div class="tag-image-wrapper" id="image-workspace" style="text-align:center;">
 			</div>
 			
 			<br>
-			<span id="resultslist"></span>
+			<div id="resultslist" class="tag-image-wrapper"></div>
 		
 		</section>
 		<div style="margin:auto;max-width:900px;text-align:right">
@@ -59,6 +69,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 		
 		<script>
 		$("#image-workspace").hide();
+		$("#resultslist").hide();
 		
 		$('#sites input:radio').addClass('input_hidden');
 		$('#sites label').click(function() {
@@ -91,15 +102,17 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			if ($(this).val()!="") {
 			
 			var objjy=$(this);
+
 			
 			$.getJSON('api.php?type=searchimages&query='+$(this).val()+'&from='+$("input[type='radio'].leftradio:checked").val()+'&to='+$("input[type='radio'].rightradio:checked").val(), function(data) {
 				
 				if (data.error===undefined) {
 					$("#image-workspace").empty();
-					$("#image-workspace").append('<span style="text-align:left;float:left;">Showing Results For "'+objjy.val()+'"</span><br>')
+					$("#image-workspace").append('<span style="text-align:left;float:left;color:#999">Showing Results For "'+objjy.val()+'"</span><br>')
 					for(var s in data.images) {
 						$("#image-workspace").append('<img onclick="imageclick(this)" style="margin:0.4em;" width="20%" src="'+data.images[s]+'" />')
 					}
+					$("#image-workspace").append('<br><span style="text-align:left;margin: 0">Click on multiple images relevant to your query to get translation</span><br>')
 				} else {
 						$("#image-workspace").empty();
 						$("#image-workspace").append(data.error)
@@ -117,12 +130,17 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 
 		});
 		
+		
+		
 		$('.workimage').click(function() {
 			alert("hi");
 			
 		});
 		
 		function imageclick(elem){	
+			
+			$("#resultslist").slideUp({"queue":true});
+			
 			$(elem).toggleClass("hover");
 			
 			var thing = new Object();
@@ -136,17 +154,26 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			
 			var array = $.toJSON( thing );
 			
+						
+			if ($(elem).attr("class")=="hover") {
+			
 			$.getJSON('api.php?type=translate&array='+array+'&from='+$("input[type='radio'].leftradio:checked").val()+'&to='+$("input[type='radio'].rightradio:checked").val(), function(data) {
+			
+			if (data.results!==undefined) {
 			
 			$("#resultslist").empty();
 							
 				for(var s in data.results) {
-						$("#resultslist").append('<span>'+data.results[s]+'</span><br>')
+					$("#resultslist").append('<span style="float:left;">'+data.results[s]+'</span><br>')						
 				}
+				
+			$("#resultslist").slideDown();
 
+			}
 			
 			});
 			
+			}
 
 		}
 		

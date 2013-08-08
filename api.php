@@ -16,7 +16,7 @@ switch (strtolower($_GET["type"])) {
 // **Misc Requests**
     case "gettag":
 		//this is to find out what image the site should be asking the user to tag
-        $stmt = $dbh->prepare("SELECT COUNT(`imagetag`.`imageid`) as 'count',`images`.`url`,`images`.`id` FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` AND (`imagetag`.`languageid`=? OR `imagetag`.`languageid` IS NULL) GROUP BY `images`.`url` ORDER BY `count` ASC");
+        $stmt = $dbh->prepare("SELECT COUNT(`imagetag`.`imageid`) as 'count',`images`.`url`,`images`.`id` FROM `images` LEFT JOIN `yrs-2013`.`imagetag` ON `images`.`id` = `imagetag`.`imageid` AND ((`imagetag`.`languageid`=? OR `imagetag`.`languageid` IS NULL) AND `imagetag`.`machine`=0) GROUP BY `images`.`url` ORDER BY `count` ASC");
 		$stmt->bindParam(1, $language["id"]);
 		$stmt->execute();
 		$image = $stmt->fetch();
@@ -39,10 +39,10 @@ switch (strtolower($_GET["type"])) {
 			echo json_encode(array("error" => "no name string"));
 			break;
 		}
-		if ((trim($_GET["name"]))=="") {
-			echo json_encode(array("error" => "name string is blank"));
-			break;
-		}
+		//if ((trim($_GET["name"]))=="") {
+		//	echo json_encode(array("error" => "name string is blank"));
+		//	break;
+		//}
 		
 		$stmt = $dbh->prepare("INSERT INTO `imagetag`(`imageid`, `languageid`, `toogeneric`, `name`) VALUES (?,?,?,?)");
 		$stmt->bindParam(1, $_GET["imageid"]);
@@ -50,6 +50,13 @@ switch (strtolower($_GET["type"])) {
 		$stmt->bindParam(3, $_GET["toogeneric"]);
 		$stmt->bindValue(4, strtolower($_GET["name"]));
 		$stmt->execute();
+		
+		if ($_GET["toogeneric"]==1) {
+			//delete that image!!! 
+			$stmt = $dbh->prepare("DELETE FROM `images` WHERE `images`.`id`= ? ");
+			$stmt->bindParam(1, $_GET["imageid"]);
+			$stmt->execute();			
+		}
 				
 		header("Location: index2.php"); //currently not working off ajax.
         break;
