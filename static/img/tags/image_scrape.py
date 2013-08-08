@@ -4,13 +4,14 @@ import requests
 import json
 import urllib2
 import hashlib
+import time
 #Connect to MySQL db, get list of image fields to scrape
 
 def lookup(num):
 	num = int(num)
-	conn = mdb.connect('130.246.255.194', 'YRS-2013', 'hipercritical', 'yrs-2013', port=3306, charset='utf8')
+	conn = mdb.connect('127.0.0.1', 'YRS-2013', 'hipercritical', 'yrs-2013', port=3306, charset='utf8')
 	cur = conn.cursor()
-	cur.execute("SELECT * FROM tagque")
+	cur.execute("SELECT * FROM tagque LIMIT 0,1")
 	fetched = cur.fetchall()
 	return_tag = fetched[num][1]
 	conn.close()
@@ -18,14 +19,15 @@ def lookup(num):
 	return return_tag
 
 def delete_tag(return_tag):
-	conn = mdb.connect('130.246.255.194', 'YRS-2013', 'hipercritical', 'yrs-2013', port=3306, charset='utf8')
+	conn = mdb.connect('127.0.0.1', 'YRS-2013', 'hipercritical', 'yrs-2013', port=3306, charset='utf8')
 	cur = conn.cursor()
-	cur.execute("DELETE FROM tagque WHERE tag=%s", (return_tag))
+	cur.execute("DELETE FROM `tagque` WHERE `tag`=%s", (return_tag))
+	conn.commit()
 	#DELETE FROM tagque WHERE idea=...
 
 def mysql_connection(img_name, tag_raw, tag_name, checksum):
 	try:
-		conn = mdb.connect('130.246.255.194', 'YRS-2013', 'hipercritical', 'yrs-2013', port = 3306,charset='utf8')
+		conn = mdb.connect('127.0.0.1', 'YRS-2013', 'hipercritical', 'yrs-2013', port = 3306,charset='utf8')
 		cur = conn.cursor()
 		cur.execute("INSERT INTO images (checksum, url) VALUES (%s, %s)", (checksum, img_name))
 		conn.commit()
@@ -46,7 +48,7 @@ def mysql_connection(img_name, tag_raw, tag_name, checksum):
 def insert_tags(tag_raw, tag_name, last_img_id):
 	print last_img_id
 	try:
-		conn = mdb.connect('130.246.255.194', 'YRS-2013','hipercritical', 'yrs-2013', port=3306, charset='utf8')
+		conn = mdb.connect('127.0.0.1', 'YRS-2013','hipercritical', 'yrs-2013', port=3306, charset='utf8')
 		cur = conn.cursor()
 		cur.execute("INSERT INTO imagetag (imageid, languageid, name, machine) VALUES (%s, %s, %s,%s)", (last_img_id, "1", tag_raw,"1"))
 		print tag_raw
@@ -67,9 +69,15 @@ while i < tag_length:
 	if i == 0:
 		url_tag = tag[i]
 	else:
-		url_tag = url_tag + "," + tag[i]
+		#url_tag = url_tag + "," + tag[i]
+		url_tag = tag[i]
 	i += 1
-url = "http://ycpi.api.flickr.com/services/rest/?method=flickr.photos.search&per_page=10&api_key=37cf642c93fc4bc58d8be3292db48442&format=json&tags=" + url_tag
+url_tag=tag
+tag_name=tag
+
+	
+url = "http://ycpi.api.flickr.com/services/rest/?method=flickr.photos.search&safety_level=safe&per_page=10&api_key=37cf642c93fc4bc58d8be3292db48442&format=json&tags=" + url_tag
+
 r = requests.get(url)
 txt = r.text
 txt = txt[14:-1]
@@ -94,6 +102,7 @@ while i < json_length:
 	#Get tags!
 	tag_url = "https://secure.flickr.com/services/rest/?method=flickr.photos.getInfo&format=json&api_key=37cf642c93fc4bc58d8be3292db48442&photo_id=" + cur_id
 	g = requests.get(tag_url)
+	time.sleep(1)
 	tag_txt = g.text
 	tag_txt = tag_txt[14:-1]
 	print tag_txt
@@ -106,13 +115,12 @@ while i < json_length:
 	json_tag_txt = json_tag_txt["photo"]["tags"]["tag"]
 	tag_len = len(json_tag_txt)
 	q = 0
-	img_name = tag[q] + str(i) + ".jpg"
+	img_name = tag_name + str(i) + ".jpg"
 	img = urllib2.urlopen(img_url).read()
 	checksum = hashlib.md5(img)
 	checksum = checksum.hexdigest()
 	print checksum
 	with open(img_name, 'wb') as f:
-		print img
 		f.write(img)
 		f.close()
 	i += 1
