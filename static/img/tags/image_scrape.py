@@ -6,6 +6,23 @@ import urllib2
 import hashlib
 #Connect to MySQL db, get list of image fields to scrape
 
+def lookup(num):
+	num = int(num)
+	conn = mdb.connect('130.246.255.194', 'YRS-2013', 'hipercritical', 'yrs-2013', port=3306, charset='utf8')
+	cur = conn.cursor()
+	cur.execute("SELECT * FROM tagque")
+	fetched = cur.fetchall()
+	return_tag = fetched[num][1]
+	conn.close()
+	delete_tag(return_tag)
+	return return_tag
+
+def delete_tag(return_tag):
+	conn = mdb.connect('130.246.255.194', 'YRS-2013', 'hipercritical', 'yrs-2013', port=3306, charset='utf8')
+	cur = conn.cursor()
+	cur.execute("DELETE FROM tagque WHERE tag=%s", (return_tag))
+	#DELETE FROM tagque WHERE idea=...
+
 def mysql_connection(img_name, tag_raw, tag_name, checksum):
 	try:
 		conn = mdb.connect('130.246.255.194', 'YRS-2013', 'hipercritical', 'yrs-2013', port = 3306,charset='utf8')
@@ -18,7 +35,9 @@ def mysql_connection(img_name, tag_raw, tag_name, checksum):
 		last_img_id2 = cur.lastrowid
 	except mdb.Error, e:
 		print "Error, I died... I know that's not very helpful but meh %d: %s" % (e.args[0], e.args[1])
-		sys.exit(1)
+		#conn.close()
+		pass
+		last_img_id2=0
 	finally:
 		if conn:
 			conn.close()
@@ -29,20 +48,21 @@ def insert_tags(tag_raw, tag_name, last_img_id):
 	try:
 		conn = mdb.connect('130.246.255.194', 'YRS-2013','hipercritical', 'yrs-2013', port=3306, charset='utf8')
 		cur = conn.cursor()
-		cur.execute("INSERT INTO imagetag (imageid, languageid, name) VALUES (%s, %s, %s)", (last_img_id, "1", tag_raw))
+		cur.execute("INSERT INTO imagetag (imageid, languageid, name, machine) VALUES (%s, %s, %s,%s)", (last_img_id, "1", tag_raw,"1"))
 		print tag_raw
 		conn.commit()
 	except mdb.Error, e:
 		print "Error inserting tags... %d: %s" % (e.args[0], e.args[1])
-		sys.exit(1)
+		#conn.close()
+		pass
 	finally:
 		if conn:
 			conn.close()
 
 #Connect to Flickr API, perform request
-tag = ["laptop"]
-tag_length = len(tag)
 i = 0
+tag = lookup(i)
+tag_length = len(tag)
 while i < tag_length:
 	if i == 0:
 		url_tag = tag[i]
@@ -54,6 +74,7 @@ r = requests.get(url)
 txt = r.text
 txt = txt[14:-1]
 json_data = json.loads(txt)
+print json_data
 json_data = json_data["photos"]["photo"]
 print json_data
 #Follow URL :-)
