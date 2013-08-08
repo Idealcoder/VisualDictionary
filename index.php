@@ -1,7 +1,6 @@
 <?php 
 session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-$pagetitle="Add Tag";
 include("$root/scripts/db-connection.php"); 
 include("$root/scripts/settings.php");
 include("$root/scripts/header.php"); 
