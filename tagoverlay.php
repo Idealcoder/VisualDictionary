@@ -80,7 +80,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 				<input type="radio" name="toogeneric" value="1"> <?php echo $messages[3]; ?><br>
 				
 				
-				<div style="text-align:right;margin:0.3em;"><a style="" class="button" href="/en/tagoverlay.php"><?php echo $messages[4]; ?></a> <button class="button" type="submit">Ok</button></div>
+				<div style="text-align:right;margin:0.3em;"><a style="" class="button" href="tagoverlay.php"><?php echo $messages[4]; ?></a> <button class="button" type="submit">Ok</button></div>
 			</form>
 			
 		</section>
