@@ -165,7 +165,7 @@ switch (strtolower($_GET["type"])) {
 	
 	$results = array();
 	while ($row = $stmt->fetch()) {
-		$results["results"][]=ucwords($row["name"]);	
+		$results["results"][]=ucwords(strtolower($row["name"]));	
 	}
 	
 	echo json_encode($results);
