@@ -157,7 +157,7 @@ switch (strtolower($_GET["type"])) {
 	foreach ($images["images"] as &$value) {
 		$i++;
 		$tokens = explode('/', $value);
-		$stmt->bindValue($i,$tokens[sizeof($tokens)-1]);
+		$stmt->bindValue($i,($tokens[sizeof($tokens)-1]));
 	}
 	$i++;
 	$stmt->bindValue($i,$languageto["id"]);
@@ -165,7 +165,7 @@ switch (strtolower($_GET["type"])) {
 	
 	$results = array();
 	while ($row = $stmt->fetch()) {
-		$results["results"][]=$row["name"];	
+		$results["results"][]=ucwords($row["name"]);	
 	}
 	
 	echo json_encode($results);
