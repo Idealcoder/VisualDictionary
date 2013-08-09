@@ -130,7 +130,7 @@ while True:
 		for tag_loop in json_tag_txt:
 			tag_id = tag_loop["id"]
 			tag_txt = tag_loop["raw"]
-			insert_tags(tag_txt, tag_id, last_img_id)
+			insert_tags(tag_txt.lower(), tag_id, last_img_id)
 			a += 1
 			tag_raw.append(tag_txt)
 			tag_ids.append(tag_id)

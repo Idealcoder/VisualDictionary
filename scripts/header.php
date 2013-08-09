@@ -11,11 +11,13 @@
 
         <link rel="stylesheet" href="/static/css/normalize.css">
         <link rel="stylesheet" href="/static/css/main.css">
-		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
         
 		<script src="/static/js/vendor/modernizr-2.6.2.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="/static/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+		
 		
 		<script>  
 		    document.createElement("article");  

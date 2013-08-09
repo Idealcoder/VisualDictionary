@@ -75,7 +75,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			<form method="GET" action="api.php">
 				<input type="hidden" name="type" value="addtag">
 				<input id="hiddeninput" type="hidden" name="imageid" value="3">
-				<input type="radio" name="toogeneric" value="0" checked="checked"><textarea type="text" name="name"></textarea><br>
+				<input type="radio" name="toogeneric" value="0" checked="checked"><textarea style="height:100px" type="text" name="name"></textarea><br>
 				<div style="margin:0.5em"></div>
 				<input type="radio" name="toogeneric" value="1"> <?php echo $messages[3]; ?><br>
 				
