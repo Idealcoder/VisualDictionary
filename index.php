@@ -192,7 +192,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			var array = $.toJSON( thing );
 			
 						
-			if ($(elem).attr("class")=="cdiuceducfeu") {
+
 			
 			$.getJSON('api.php?type=translate&array='+array+'&from='+$("input[type='radio'].leftradio:checked").val()+'&to='+$("input[type='radio'].rightradio:checked").val(), function(data) {
 			
@@ -210,7 +210,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			
 			});
 			
-			}
+			
 
 		}
 		
