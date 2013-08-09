@@ -1,5 +1,21 @@
-YRS-2013
-========
+Visual Dictionary 
+=================
 
-This is the repo for our undecided project. It has been setup to sync with a laptop running debian (apache2,php5 + mysql) so changes will be pushed automatically
+Dependencies
+------------------
+Apache
+PHP
+MySQL
+Python
+Python-MYSQLdb
+Pyhton-Requests
+
+Install
+--------
+Clone the directory .MySQL Database Schema at root of source, import with phpmyadmin
+Create a file called db-connection.php in scripts folder
+
+Live Website
+----------------
+There is a live website at http://www.idealcoder.co.uk
 
