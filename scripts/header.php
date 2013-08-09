@@ -39,9 +39,9 @@
 
 			while ($row = $stmt->fetch()) {			
 				if ($row["id"]==$language["id"]) {
-					echo '			<a title="'.$row["fulltext"].'" href="/'.$row["accro"].'/index2.php"><img class="flag flag-active" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";
+					echo '			<a title="'.$row["fulltext"].'" href="/'.$row["accro"].'/index.php"><img class="flag flag-active" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";
 				} else {
-					echo '			<a title="'.$row["fulltext"].'" href="/'.$row["accro"].'/index2.php"><img class="flag" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";				
+					echo '			<a title="'.$row["fulltext"].'" href="/'.$row["accro"].'/index.php"><img class="flag" src="/static/img/flags/'.$row["flagurl"].'" /></a>'."\n";				
 				}
 			}
 			
@@ -49,5 +49,8 @@
 		
 		</div>
 		<nav>
+			<span style="float:left;">
+			<img width="40" height="40" src="/static/img/flags/<?php echo $language["flagurl"]; ?>" />
+			</span>
 			<a href="#"><i id="settingsbutton" class="icon-cogs icon-2x"></i></a>
 		</nav>
