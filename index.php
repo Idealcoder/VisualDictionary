@@ -54,7 +54,9 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			?>			</div></div>
 			<br>
 			<center>
-			<input style="" id="searchbox" type="text" placeholder="Type Search Here" /><br><br>
+			<input style="" id="searchbox" type="text" placeholder="Type Search Here" />
+			<button style="padding:0.5em;" class="button" id="searchbutton" >Search </button><br><br>
+			
 			</center>
 			
 			<div class="tag-image-wrapper" id="image-workspace" style="text-align:center;">
@@ -111,7 +113,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 					$("#image-workspace").empty();
 					$("#image-workspace").append('<span style="text-align:left;float:left;color:#999">Showing Results For "'+objjy.val()+'"</span><br>')
 					for(var s in data.images) {
-						$("#image-workspace").append('<img onclick="imageclick(this)" style="margin:0.4em;" width="20%" src="'+data.images[s]+'" />')
+						$("#image-workspace").append('<img onclick="imageclick(this)" style="margin:0.4em;min-width:100px;max-width:160px;width:40%;" src="'+data.images[s]+'" />')
 					}
 					$("#image-workspace").append('<br><span style="text-align:left;margin: 0">Click on multiple images relevant to your query to get translation</span><br>')
 				} else {
@@ -131,10 +133,44 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 
 		});
 		
+		$("#searchbutton").click(function() {
+
+			$("#image-workspace").slideUp({"queue":true});
+			if ($("#searchbox").val()!="") {
+				//alert("hi");
+			var objjy=$("#searchbox");
+
+			
+			$.getJSON('api.php?type=searchimages&query='+$("#searchbox").val()+'&from='+$("input[type='radio'].leftradio:checked").val()+'&to='+$("input[type='radio'].rightradio:checked").val(), function(data) {
+				
+				if (data.error===undefined) {
+					$("#image-workspace").empty();
+					$("#image-workspace").append('<span style="text-align:left;float:left;color:#999">Showing Results For "'+objjy.val()+'"</span><br>')
+					for(var s in data.images) {
+						$("#image-workspace").append('<img onclick="imageclick(this)" style="margin:0.4em;" width="20%" src="'+data.images[s]+'" />')
+					}
+					$("#image-workspace").append('<br><span style="text-align:left;margin: 0">Click on multiple images relevant to your query to get translation</span><br>')
+				} else {
+						$("#image-workspace").empty();
+						$("#image-workspace").append(data.error)
+			}
+			$("#image-workspace").slideDown({"queue":true});
+			
+			});
+			
+			} else {
+				$("#image-workspace").empty();
+				//$("#image-workspace").slideDown({"queue":true});
+			}
+			
+			
+
+		});
+		
 		
 		
 		$('.workimage').click(function() {
-			alert("hi");
+			//alert("hi");
 			
 		});
 		
@@ -156,7 +192,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			var array = $.toJSON( thing );
 			
 						
-			if ($(elem).attr("class")=="hover") {
+
 			
 			$.getJSON('api.php?type=translate&array='+array+'&from='+$("input[type='radio'].leftradio:checked").val()+'&to='+$("input[type='radio'].rightradio:checked").val(), function(data) {
 			
@@ -174,7 +210,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 			
 			});
 			
-			}
+			
 
 		}
 		

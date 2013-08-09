@@ -11,7 +11,7 @@ include("$root/scripts/header.php");
 			
 			<?php echo $messages[2]; ?>:<div style="margin:0.5em"></div>
 			
-			<div class="tag-image-wrapper" style="text-align:center"><img height="320" width="320" id="inputimage" class="tag-image" src="" /></div>
+			<div class="tag-image-wrapper" style="text-align:center"><img width="320" id="inputimage" class="tag-image" src="" /></div>
 			<form method="GET" action="api.php">
 				<input type="hidden" name="type" value="addtag">
 				<input id="hiddeninput" type="hidden" name="imageid" value="3">
@@ -20,7 +20,7 @@ include("$root/scripts/header.php");
 				<input type="radio" name="toogeneric" value="1"> <?php echo $messages[3]; ?><br>
 				
 				
-				<div style="text-align:right;margin:0.3em;"><a style="" class="button" href="/en/index.php"><?php echo $messages[4]; ?></a> <button class="button" type="submit">Ok</button></div>
+				<div style="text-align:right;margin:0.3em;"><a style="" class="button" href="tag.php"><?php echo $messages[4]; ?></a> <button class="button" type="submit">Ok</button></div>
 			</form>
 			
 		</section>
