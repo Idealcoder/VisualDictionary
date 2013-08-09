@@ -137,7 +137,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 
 			$("#image-workspace").slideUp({"queue":true});
 			if ($("#searchbox").val()!="") {
-				alert("hi");
+				//alert("hi");
 			var objjy=$("#searchbox");
 
 			
@@ -170,7 +170,7 @@ echo '			<input type="radio" class="rightradio" name="site2" id="'.$row["accro"]
 		
 		
 		$('.workimage').click(function() {
-			alert("hi");
+			//alert("hi");
 			
 		});
 		
