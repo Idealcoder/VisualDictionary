@@ -20,6 +20,7 @@ switch (strtolower($_GET["type"])) {
 		$stmt->bindParam(1, $language["id"]);
 		$stmt->execute();
 		$image = $stmt->fetch();
+
 		
 		$image["url"]="http://".$_SERVER["SERVER_NAME"]."/static/img/tags/".$image["url"];
 		
@@ -44,12 +45,18 @@ switch (strtolower($_GET["type"])) {
 		//	break;
 		//}
 		
-		$stmt = $dbh->prepare("INSERT INTO `imagetag`(`imageid`, `languageid`, `toogeneric`, `name`) VALUES (?,?,?,?)");
-		$stmt->bindParam(1, $_GET["imageid"]);
-		$stmt->bindParam(2, $language["id"]);
-		$stmt->bindParam(3, $_GET["toogeneric"]);
-		$stmt->bindValue(4, strtolower($_GET["name"]));
-		$stmt->execute();
+		$array = explode("\n",strtolower($_GET["name"]));
+		
+		foreach ($array as &$value) {
+			$stmt = $dbh->prepare("INSERT INTO `imagetag`(`imageid`, `languageid`, `toogeneric`, `name`) VALUES (?,?,?,?)");
+			$stmt->bindParam(1, $_GET["imageid"]);
+			$stmt->bindParam(2, $language["id"]);
+			$stmt->bindParam(3, $_GET["toogeneric"]);
+			$stmt->bindValue(4, $value);
+			$stmt->execute();
+		}
+		
+
 		
 		if ($_GET["toogeneric"]==1) {
 			//delete that image!!! 
